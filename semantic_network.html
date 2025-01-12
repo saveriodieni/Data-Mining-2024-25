@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "cat", "label": "cat", "shape": "dot", "size": 10, "title": "cat"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "dog", "label": "dog", "shape": "dot", "size": 10, "title": "dog"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "boy", "label": "boy", "shape": "dot", "size": 10, "title": "boy"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "bird", "label": "bird", "shape": "dot", "size": 10, "title": "bird"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "horse", "label": "horse", "shape": "dot", "size": 10, "title": "horse"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "rabbit", "label": "rabbit", "shape": "dot", "size": 10, "title": "rabbit"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "squirrel", "label": "squirrel", "shape": "dot", "size": 10, "title": "squirrel"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "snake", "label": "snake", "shape": "dot", "size": 10, "title": "snake"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "puppy", "label": "puppy", "shape": "dot", "size": 10, "title": "puppy"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "child", "label": "child", "shape": "dot", "size": 10, "title": "child"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "flower", "label": "flower", "shape": "dot", "size": 10, "title": "flower"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "dogs", "label": "dogs", "shape": "dot", "size": 10, "title": "dogs"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "clock", "label": "clock", "shape": "dot", "size": 10, "title": "clock"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "tree", "label": "tree", "shape": "dot", "size": 10, "title": "tree"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "truck", "label": "truck", "shape": "dot", "size": 10, "title": "truck"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "gatto", "label": "gatto", "shape": "dot", "size": 10, "title": "gatto"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "ragazzo", "label": "ragazzo", "shape": "dot", "size": 10, "title": "ragazzo"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "bambino", "label": "bambino", "shape": "dot", "size": 10, "title": "bambino"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "discorso", "label": "discorso", "shape": "dot", "size": 10, "title": "discorso"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "professore", "label": "professore", "shape": "dot", "size": 10, "title": "professore"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "cavallo", "label": "cavallo", "shape": "dot", "size": 10, "title": "cavallo"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "pesce", "label": "pesce", "shape": "dot", "size": 10, "title": "pesce"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "cuore", "label": "cuore", "shape": "dot", "size": 10, "title": "cuore"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "cappello", "label": "cappello", "shape": "dot", "size": 10, "title": "cappello"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "gelato", "label": "gelato", "shape": "dot", "size": 10, "title": "gelato"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "giornale", "label": "giornale", "shape": "dot", "size": 10, "title": "giornale"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "cane", "label": "cane", "shape": "dot", "size": 10, "title": "cane"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "dottore", "label": "dottore", "shape": "dot", "size": 10, "title": "dottore"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "capo", "label": "capo", "shape": "dot", "size": 10, "title": "capo"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "latte", "label": "latte", "shape": "dot", "size": 10, "title": "latte"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "fuoco", "label": "fuoco", "shape": "dot", "size": 10, "title": "fuoco"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "chat", "label": "chat", "shape": "dot", "size": 10, "title": "chat"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "gar\u00e7on", "label": "gar\u00e7on", "shape": "dot", "size": 10, "title": "gar\u00e7on"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "chien", "label": "chien", "shape": "dot", "size": 10, "title": "chien"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "vent", "label": "vent", "shape": "dot", "size": 10, "title": "vent"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "passage", "label": "passage", "shape": "dot", "size": 10, "title": "passage"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "serpent", "label": "serpent", "shape": "dot", "size": 10, "title": "serpent"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "corps", "label": "corps", "shape": "dot", "size": 10, "title": "corps"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "regard", "label": "regard", "shape": "dot", "size": 10, "title": "regard"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "chiffon", "label": "chiffon", "shape": "dot", "size": 10, "title": "chiffon"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "m\u00e9decin", "label": "m\u00e9decin", "shape": "dot", "size": 10, "title": "m\u00e9decin"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "b\u00e9b\u00e9", "label": "b\u00e9b\u00e9", "shape": "dot", "size": 10, "title": "b\u00e9b\u00e9"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "c\u0153ur", "label": "c\u0153ur", "shape": "dot", "size": 10, "title": "c\u0153ur"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "p\u00e8re", "label": "p\u00e8re", "shape": "dot", "size": 10, "title": "p\u00e8re"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "professeur", "label": "professeur", "shape": "dot", "size": 10, "title": "professeur"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "visage", "label": "visage", "shape": "dot", "size": 10, "title": "visage"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "chapeau", "label": "chapeau", "shape": "dot", "size": 10, "title": "chapeau"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "fr\u00e8re", "label": "fr\u00e8re", "shape": "dot", "size": 10, "title": "fr\u00e8re"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "grandp\u00e8re", "label": "grandp\u00e8re", "shape": "dot", "size": 10, "title": "grandp\u00e8re"}]);
+                  edges = new vis.DataSet([{"from": "cat", "to": "dog", "width": 0.887577474117279}, {"from": "cat", "to": "boy", "width": 0.8844391107559204}, {"from": "cat", "to": "bird", "width": 0.8587238788604736}, {"from": "cat", "to": "horse", "width": 0.8576750159263611}, {"from": "cat", "to": "rabbit", "width": 0.8512253761291504}, {"from": "cat", "to": "squirrel", "width": 0.8407779335975647}, {"from": "cat", "to": "snake", "width": 0.8374595642089844}, {"from": "cat", "to": "puppy", "width": 0.8349277377128601}, {"from": "cat", "to": "child", "width": 0.8340840339660645}, {"from": "cat", "to": "flower", "width": 0.8293748497962952}, {"from": "dog", "to": "horse", "width": 0.817597508430481}, {"from": "dog", "to": "boy", "width": 0.794648289680481}, {"from": "dog", "to": "dogs", "width": 0.7940826416015625}, {"from": "dog", "to": "puppy", "width": 0.7727295160293579}, {"from": "dog", "to": "snake", "width": 0.7652619481086731}, {"from": "dog", "to": "clock", "width": 0.7607619166374207}, {"from": "dog", "to": "tree", "width": 0.7577347159385681}, {"from": "dog", "to": "truck", "width": 0.7547054290771484}, {"from": "dog", "to": "bird", "width": 0.7536213397979736}, {"from": "gatto", "to": "ragazzo", "width": 0.9075192809104919}, {"from": "gatto", "to": "bambino", "width": 0.8977959752082825}, {"from": "gatto", "to": "discorso", "width": 0.8913410305976868}, {"from": "gatto", "to": "professore", "width": 0.8863273859024048}, {"from": "gatto", "to": "cavallo", "width": 0.8832066655158997}, {"from": "gatto", "to": "pesce", "width": 0.8824114203453064}, {"from": "gatto", "to": "cuore", "width": 0.878253161907196}, {"from": "gatto", "to": "cappello", "width": 0.875100314617157}, {"from": "gatto", "to": "gelato", "width": 0.8707407116889954}, {"from": "gatto", "to": "giornale", "width": 0.8666017651557922}, {"from": "gatto", "to": "cane", "width": 0.8125624656677246}, {"from": "ragazzo", "to": "cane", "width": 0.7533012628555298}, {"from": "discorso", "to": "cane", "width": 0.7456246018409729}, {"from": "cavallo", "to": "cane", "width": 0.7550104260444641}, {"from": "cuore", "to": "cane", "width": 0.7685399651527405}, {"from": "cappello", "to": "cane", "width": 0.7334716320037842}, {"from": "cane", "to": "dottore", "width": 0.7466800808906555}, {"from": "cane", "to": "capo", "width": 0.737698495388031}, {"from": "cane", "to": "latte", "width": 0.7307997345924377}, {"from": "cane", "to": "fuoco", "width": 0.7306826710700989}, {"from": "chat", "to": "gar\u00e7on", "width": 0.7680496573448181}, {"from": "chat", "to": "chien", "width": 0.7510887980461121}, {"from": "chat", "to": "vent", "width": 0.7293863296508789}, {"from": "chat", "to": "passage", "width": 0.7251445055007935}, {"from": "chat", "to": "serpent", "width": 0.7248255610466003}, {"from": "chat", "to": "corps", "width": 0.7216642498970032}, {"from": "chat", "to": "regard", "width": 0.7209970951080322}, {"from": "chat", "to": "chiffon", "width": 0.7158214449882507}, {"from": "chat", "to": "m\u00e9decin", "width": 0.7128284573554993}, {"from": "chat", "to": "b\u00e9b\u00e9", "width": 0.7125160098075867}, {"from": "gar\u00e7on", "to": "chien", "width": 0.9320282936096191}, {"from": "chien", "to": "b\u00e9b\u00e9", "width": 0.9173187613487244}, {"from": "chien", "to": "m\u00e9decin", "width": 0.9155030846595764}, {"from": "chien", "to": "c\u0153ur", "width": 0.905620276927948}, {"from": "chien", "to": "p\u00e8re", "width": 0.8991077542304993}, {"from": "chien", "to": "professeur", "width": 0.8926527500152588}, {"from": "chien", "to": "visage", "width": 0.8863779902458191}, {"from": "chien", "to": "chapeau", "width": 0.8854979276657104}, {"from": "chien", "to": "fr\u00e8re", "width": 0.8845935463905334}, {"from": "chien", "to": "grandp\u00e8re", "width": 0.8807275891304016}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.33,
+            "damping": 0.95,
+            "nodeDistance": 150,
+            "springConstant": 0.1,
+            "springLength": 100
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
